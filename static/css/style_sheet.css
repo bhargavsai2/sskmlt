@@ -1,0 +1,184 @@
+@charset "utf-8";
+body {
+	font: 100%/1.4  Arial, Helvetica, sans-serif;
+	background: #42413C;
+	margin: 0;
+	padding: 0;
+	color: #000;
+	/*background:url(body_bg_repeat.jpg) repeat-x left top;*/
+}
+
+
+ul, ol, dl { 
+	padding: 0;
+	margin: 0;
+}
+
+
+h1 {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 0;
+	padding-right: 5px;
+	padding-left: 5px;
+	color: #F9F9F9;
+	font-size:36px;
+}
+
+h2, h3, h4, h5, h6 {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	color: white;
+	font-size:14px
+}
+
+p {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	color: white;
+	font-size:12px
+}
+
+.button {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #3a3a3a;
+	font-weight: bold;
+	font-size: 75%;
+	width:75px;
+	background: #7cc24f;
+    border: 0px;
+    padding: 7px;
+}
+
+.form_text {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	color: white;
+	font-size:14px;
+	vertical-align: baseline;
+}
+
+
+a img { border: none;
+}
+
+
+a:link {
+	color:
+	#7ec17b;	
+	text-decoration: underline; 
+}
+
+a:visited {
+	color: #6E6C64;
+	text-decoration: underline;
+}
+
+a:hover, a:active, a:focus { 
+	text-decoration: none;
+}
+
+
+
+/* ~~ This fixed width container surrounds all other divs ~~ */
+
+.container {
+	width: 100%;
+	margin: 0 auto;
+	text-align: left;
+}
+
+
+
+.header {
+	font-size: 36px;
+}
+
+.sidebar1 {
+	float: left;
+	width: 15%;
+	padding-bottom: 10px;
+}
+.content {
+	padding: 10px 0;
+	width: 70%;
+	float: left;
+}
+
+
+/* Styling for login area */
+.content-loginform {
+	margin:0px auto;
+	text-align:left;
+	padding: 10px 0;
+	width: 350px;
+	background-color: #001a33b8;
+}
+
+
+
+.sidebar2 {
+	float: left;
+	width: 15%;
+	padding: 10px 0;
+}
+
+
+.content ul, .content ol { 
+	padding: 0 15px 15px 40px; 
+}
+
+
+
+/* ~~ Miscellaneous float/clear classes ~~ */
+.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the .container) if the .footer is removed or taken out of the .container */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+
+.logo {
+      -webkit-transform: scale(0.75); /* Saf3.1+, Chrome */
+     -moz-transform: scale(0.75); /* FF3.5+ */
+      -ms-transform: scale(0.75); /* IE9 */
+       -o-transform: scale(0.75); /* Opera 10.5+ */
+          transform: scale(0.75);
+   }
+   
+   
+.mini-text {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #F9F9F9;
+}
+
+.input-text-auth {
+    -moz-border-radius: 5px 5px 5px 5px;
+    background-color: #F9F9F9;
+    background-repeat: repeat-x;
+    border: 3px solid #4C4C4C;
+    color: #2D2D2D;
+    font-weight: normal;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+.footer {
+	padding: 40px 0;
+	position: relative;/* this gives IE6 hasLayout to properly clear */
+	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
+}

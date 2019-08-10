@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+      <section class="content">
+        <div class="row">
+          <!-- /.col -->
+            <div class="col-md-12">
+              <form role="form">
+                <div class="box" style="border-top:none;">
+                  {% if total_nodes == 0 %}
+                  <div class="box-body">
+                    <h3 class="box-title">Assign Nodes</h3>
+                    No.of Multi tenancy nodes {{total_nodes}} with high priority {{priority}} and {{low_priority}} with low priority.
+                    <div class='row' style="padding:25px;">
+                        {% for node in assignednodes %}
+                        <div style="padding:30px;">
+                        <div class="col-md-1">
+                            <label for="Verifier">{{node.verfier}}</label>
+                        </div>
+                        <div class="col-md-1">    
+                            <input type="text" class="form-control priority-low-multi" id={{node.verfier}} style="width: 50px" value={{node.low_priority_multi_nodes}}>
+                        </div>
+                        <div class="col-md-1">    
+                            <input type="text" class="form-control priority-high-multi" style="width: 50px;border-color: red;" value={{node.high_priority_multi_nodes}} id={{node.verfier}}>
+                        </div>
+                      </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+            </div>
+            {% endif %}
+          <div class="box-body">
+              <h4>Single tenancy High priority nodes are <b>{{high_nodes}}</b> and Single tenancy Low priority nodes are <b>{{low_nodes}}</b></h4>
+              <h5>* <span style="color: red">Red color</span> box represents priority nodes</h5>                        
+              <div class='row' style="padding:25px;">
+              {% for node in assignednodes %}
+                  <div style="padding:30px;">
+                  <div class="col-md-1">
+                    <label for="Verifier">{{node.verfier}}</label>
+                  </div>    
+                  <div class="col-md-1">    
+                    <input type="text" class="form-control priority-low-single" id="{{node.verfier}}" style="width: 50px" value={{node.low_priority_single_nodes}}>
+                  </div>
+                  <div class="col-md-1">    
+                    <input type="text" class="form-control priority-high-single" id="{{node.verfier}}" style="width: 50px;border-color: red;" value={{node.high_priority_single_nodes}}>
+                  </div>          
+                </div>
+              {% endfor %}
+            </div>      
+          </div>
+          
+          </form>
+
+          </div>
+          <!--/.col-->
+        </div>
+        <!-- /.row -->
+      </section>
+    </div>
+    {% endblock %}
+{% block script %}    
+  <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#usertable').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+            $(".clickable-row").click(function() {
+                window.document.location = $(this).data("href");
+              });
+            $('#assign').click(function() {
+                low_single_nodes = $('.priority-low-single');
+                high_single_nodes = $('.priority-high-single');
+                low_multi_nodes = $('.priority-low-multi');
+                high_multi_nodes = $('.priority-high-multi');
+                jsonObj = [];
+                $('.priority-low-single').each(function() {
+                     var verifier = $(this)[0].id;
+                     low_single = $(this).val();
+                     high_single = $('.priority-high-single'+'#'+verifier).val()
+                     low_multi = $('.priority-low-multi'+'#'+verifier).val()
+                     high_multi = $('.priority-high-multi'+'#'+verifier).val() 
+                     item = {}
+                     item ["verifier"] = verifier;
+                     item ["low_single"] = low_single;
+                     item ["high_single"] = high_single;
+                     item ["low_multi"] = low_multi;
+                     item ["high_mutli"] = high_multi;
+                     item["schedule_date"] = window.location.href.split('/')[4];
+                     jsonObj.push(item);
+                });
+                $.ajax({
+                        url: window.location.href,
+                        type: "POST",
+                        data: {
+                          csrfmiddlewaretoken: getCookie('csrftoken'),
+                          data:JSON.stringify(jsonObj),
+                    },
+                    success: function (json) {
+                      display_success('Assigned Nodes Successfully')                
+                    },
+                    error: function (xhr, errmsg, err) {
+                      display_error('Error Processing Ajax')
+                    }
+                  });
+                    
+                
+
+            });
+           /* $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#Verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });*/  
+      });    
+    </script>       
+{% endblock %}

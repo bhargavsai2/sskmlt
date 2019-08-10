@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <div class="box">
+              <div><h3 style="padding-left: 10px;display: inline-block;">RNI/Node's</h3>
+                  <div style="display: inline-flex; margin: 20px" class="pull-right">
+                  <button type="button" class="btn btn-block btn-success" style="margin-left: 10px"><a href="/rni/">Add RNI</a></button>
+                </div>
+                  </div>
+            <div class='box-body'>
+                  <table class="table table-bordered table-striped" id="rnitable">
+                        <thead>
+                        <tr>
+                            <th>RNI ID</th>
+                            <th>RNI Name</th>
+                            <th>Default Time</th>
+                            <th>Verifier</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                     {% for rni in rnis %}
+                            <tr class='clickable-row' data-href='/rnis/{{ rni.id }}/'>
+                                <td>{{ rni.ncid }}</td>
+                                <td>{{ rni.rniname }}</td>
+                                <td>{{ rni.default_time }}</td>
+                                <td>{{ rni.last_verifiedby }}</td>
+                                <td>{{ rni.status }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+                   </table>
+
+            </div>
+            <div style="padding: 10px;"><p style="display: inline-block;">Click on <b>Rni record</b> to view details</p></div>
+            </div>    
+
+          </div>
+        </form>
+        </div>
+        </div>
+      </div>
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+    {% endblock %}    
+    {% block script %}    
+  <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#rnitable').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+            $(".clickable-row").click(function() {
+                  window.document.location = $(this).data("href");
+              });
+           /* $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#Verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });*/  
+      });    
+    </script>       
+{% endblock %}

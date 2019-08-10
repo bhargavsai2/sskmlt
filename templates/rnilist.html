@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+          <div id="Accountedit">
+            <div class="box">
+              <form role="form" name='Rni form' id = 'target-form' method='POST'>
+                {% csrf_token %}
+                <div class="box-body">
+                  <h3 class="box-title">Manage RNI/Node</h3>
+                  <div class="col-xs-6">  
+                    <div class="form-group">
+                      <label for="RNI Name">RNI Name</label>
+                      <input type="text" class="form-control" id="rni_name" placeholder="Rni name" value="{{rni.rniname}}">
+                    </div>
+                    <div class="form-group">
+                      <label for="Default Time">Default Time</label>
+                      <input type="text" class="form-control" id="default_time" placeholder="Default Time" value="{{rni.default_time}}">
+                    </div>
+                    <div class="form-group">
+                      <label for="RNI Version">RNI Version</label>
+                      <!-- <input type="text" class="form-control" id="rni_version" placeholder="RNI Version" value="{{rni.version}}"> -->
+                      <select class="form-control" id='rni_version' value='{{rni.version}}'>
+                        <option value='others' {% if rni.version == 'others' %}selected{%endif%}>others</option>
+                        <option value='2x' {% if rni.version == '2x' %}selected{%endif%}>2x</option>
+                        <option value='3x' {% if rni.version == '3x' %}selected{%endif%}>3x</option>
+                        <option value='3x_GA' {% if rni.version == '3x_GA' %}selected{%endif%}>3x_GA</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="Verifier">Verifier</label>
+                      <input type="text" class="form-control" id="verifier" placeholder="Verifier" data-toggle="modal" data-target="#modal-default" value="{{rni.last_verifiedby}}">
+                    </div>
+                  </div>
+                  <div class="col-xs-6">  
+                    <div class="form-group">
+                      <label for="RNI ID">RNI ID</label>
+                      <input type="text" class="form-control" id="rniid" placeholder="RNI ID" value="{{rni.rninode}}">
+                    </div>  
+                  
+                    <div class="form-group">
+                      <label for="NC ID">NC ID</label>
+                      <input type="text" class="form-control" id="ncid" placeholder="NC ID" value="{{rni.ncid}}">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="URL">URL</label>
+                      <input type="text" class="form-control" id="url" placeholder="URL" value="{{rni.URL}}">
+                    </div>
+            
+                    <div class="form-group">
+                      <label for="rni_type">Rni Type</label>
+                      <select class="form-control" id='rni_type' value='{{rni.rni_type}}'>
+                        <option value='Single Tenant' {% if rni.rni_type == 'Single Tenant' %}selected{%endif%} >Single Tenant</option>
+                        <option value='Multi Tenant Parent' {% if rni.rni_type == 'Multi Tenant Parent' %}selected{%endif%}>Multi Tenant Parent</option>
+                        <option value='Multi Tenant Child' {% if rni.rni_type == 'Multi Tenant Child' %}selected{%endif%}>Multi Tenant Child</option>
+                      </select>
+                    </div>
+                  </div>
+          </div>
+        </form>
+        </div>
+        </div>
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+    <div class="modal fade in" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Default Modal</h4>
+              </div>
+              <div class="modal-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped" id="usertable">
+                        <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                     {% for user in users %}
+                            <tr value={{username}}>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                                <td id='username'>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+                   </table>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+    {% endblock %}    
+    {% block script %}    
+    <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#usertable').DataTable({
+              'paging'      : true,
+              'lengthChange': false,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+            $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });
+            $("#target-form :input").prop("disabled", true);
+              $('#edit').click(function() {
+                $("#target-form :input").prop("disabled", false);
+              });
+              $('#cancel').click(function() {
+                $("#target-form :input").prop("disabled", true);
+              });
+              $('#save').click(function(){
+                    $.ajax({
+                        url: window.location.href,
+                        type: "POST",
+                        data: {
+                          csrfmiddlewaretoken: getCookie('csrftoken'),
+                          rni_name:$('#rni_name').val(),
+                          rniid:$('#rniid').val(),
+                          ncid:$('#ncid').val(),
+                          verifier:$('#verifier').val(),
+                          url:$('#url').val(),
+                          rni_type:$('#rni_type').val(),
+                          default_time:$('#default_time').val(),
+                          rni_version:$('#rni_version').val()
+                    },
+                    success: function (json) {
+                      new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        theme: 'mint',
+                        text: 'Saved Successfully',
+                        timeout: 3000,
+                        progressBar: true,
+                        closeWith: ['click', 'button'],
+                        animation: {
+                            open: 'noty_effects_open',
+                            close: 'noty_effects_close'
+                        },
+                        id: false,
+                        force: false,
+                        killer: false,
+                        queue: 'global',
+                        container: false,
+                        buttons: [],
+                        sounds: {
+                            sources: [],
+                            volume: 1,
+                            conditions: []
+                        },
+                        titleCount: {
+                            conditions: []
+                        },
+                        modal: false
+                    }).show();                
+                    },
+                    error: function (xhr, errmsg, err) {
+                      new Noty({
+                      type: 'error',
+                      layout: 'topRight',
+                      theme: 'mint',
+                      text: 'Error',
+                      timeout: 3000,
+                      progressBar: true,
+                      closeWith: ['click', 'button'],
+                      animation: {
+                          open: 'noty_effects_open',
+                          close: 'noty_effects_close'
+                      },
+                      id: false,
+                      force: false,
+                      killer: false,
+                      queue: 'global',
+                      container: false,
+                      buttons: [],
+                      sounds: {
+                          sources: [],
+                          volume: 1,
+                          conditions: []
+                      },
+                      titleCount: {
+                          conditions: []
+                      },
+                      modal: false
+                        }).show()
+                    }
+                  });
+                    
+
+              });  
+      });    
+    </script>    
+{% endblock %}

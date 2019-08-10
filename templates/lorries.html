@@ -1,0 +1,74 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <div class="box">
+              <div><h3 style="padding-left: 10px;display: inline-block;">Lorry Details</h3>
+                  <div style="display: inline-flex; margin: 20px" class="pull-right">
+                  <button type="button" class="btn btn-block btn-success" style="margin-left: 10px"><a href="/create_lorry/">Add Lorry</a></button>
+                </div>
+                  </div>
+            <div class='box-body'>
+                <table class="table table-bordered table-striped" id="lorrytable">
+                        <thead>
+                        <tr>
+                            <th>Truck No</th>
+                            <th>Driver name</th>
+                            <th>Owner name</th>
+                            <th>Licence ID</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                     {% for lorry in lorries %}
+                            <tr class='clickable-row' data-href='/lorry/{{ lorry.id }}/'>
+                                <td>{{ lorry.truck_no }}</td>
+                                <td>{{ lorry.driver_name }}</td>
+                                <td id='username'>{{ lorry.owner_name }}</td>
+                                <td>{{ lorry.licence_id }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+                   </table>
+
+            </div>
+            <div style="padding: 10px;"><p style="display: inline-block;">Click on <b>Rni record</b> to view details</p></div>
+            </div>    
+
+          </div>
+        </form>
+        </div>
+        </div>
+      </div>
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+    {% endblock %}    
+    {% block script %}    
+  <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#lorrytable').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+            $(".clickable-row").click(function() {
+                  window.document.location = $(this).data("href");
+              });
+           /* $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#Verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });*/  
+      });    
+    </script>       
+{% endblock %}

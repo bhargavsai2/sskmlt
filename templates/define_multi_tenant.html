@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class='col-md-12'>
+        <!-- /.col -->
+            <div class="box">
+              <form role="form" name='Rni form' id = 'target-form' method='POST'>
+                {% csrf_token %}
+                <div class="box-body">
+                  <h3 class="box-title">ADD MultiTenant RNI</h3>
+                  {% for rni in multi_rnis %}
+                    <div class="col-md-2">
+                       <div class="form-group">
+                            <label for="parent Rni">Parent Rni</label>
+                            <input type="text" class="form-control parentrni" id="parent_rni" placeholder="Parent Rni" value = {{rni.rninode}}>
+                          </div>
+                        </div>
+                        <div class="col-md-10">
+                   <div class="form-group">
+                            <label for="Child Rnis">Child Rnis</label>
+                            <input type="text" class="form-control {{rni.rninode}}" id="child_rnis" placeholder="Child Rnis" value ='{{rnis.rni.rninode}}'>
+                          </div>
+                        </div>
+                    {% endfor %}
+          </div>
+        </form>
+        </div>
+
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+    {% endblock %}    
+    {% block script %}    
+    <script type="text/javascript">
+      $( document ).ready(function() {
+            $("#target-form :input").prop("disabled", true);
+              $('#edit').click(function() {
+                $("#target-form :input").prop("disabled", false);
+              });
+              $('#cancel').click(function() {
+                $("#target-form :input").prop("disabled", true);
+              });
+              $('#save').click(function(){
+                    jsonObj = [];
+                    $(".parentrni").each(function() {
+                        var value = $(this).val();
+                        child_rnis = $('.' + value).val();
+
+                        item = {}
+                        item ["parent_rni"] = value;
+                        item ["child_rnis"] = child_rnis;
+
+                        jsonObj.push(item);
+                    });
+                    console.log(jsonObj);
+                    $.ajax({
+                        url: window.location.href,
+                        type: "POST",
+                        data: {
+                          csrfmiddlewaretoken: getCookie('csrftoken'),
+                          data:JSON.stringify(jsonObj),
+                    },
+                    success: function (json) {
+                      new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        theme: 'mint',
+                        text: 'Saved Successfully',
+                        timeout: 3000,
+                        progressBar: true,
+                        closeWith: ['click', 'button'],
+                        animation: {
+                            open: 'noty_effects_open',
+                            close: 'noty_effects_close'
+                        },
+                        id: false,
+                        force: false,
+                        killer: false,
+                        queue: 'global',
+                        container: false,
+                        buttons: [],
+                        sounds: {
+                            sources: [],
+                            volume: 1,
+                            conditions: []
+                        },
+                        titleCount: {
+                            conditions: []
+                        },
+                        modal: false
+                    }).show();                
+                    },
+                    error: function (xhr, errmsg, err) {
+                      new Noty({
+                      type: 'error',
+                      layout: 'topRight',
+                      theme: 'mint',
+                      text: 'Error',
+                      timeout: 3000,
+                      progressBar: true,
+                      closeWith: ['click', 'button'],
+                      animation: {
+                          open: 'noty_effects_open',
+                          close: 'noty_effects_close'
+                      },
+                      id: false,
+                      force: false,
+                      killer: false,
+                      queue: 'global',
+                      container: false,
+                      buttons: [],
+                      sounds: {
+                          sources: [],
+                          volume: 1,
+                          conditions: []
+                      },
+                      titleCount: {
+                          conditions: []
+                      },
+                      modal: false
+                        }).show()
+                    }
+                  });
+                    
+
+              });  
+      });    
+    </script>    
+{% endblock %}

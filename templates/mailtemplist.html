@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <div class="box">
+              <div><h3 style="padding-left: 10px;display: inline-block;">Mail Template's</h3>
+                  <div style="display: inline-flex; margin: 20px" class="pull-right">
+                  <button type="button" class="btn btn-block btn-success" style="margin-left: 10px"><a href="/mail_template/">Add Template</a></button>
+                </div>
+                  </div>
+            <div class='box-body'>
+                  <table class="table table-bordered table-striped" id="mailtable">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Subject</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                     {% for temp in temps %}
+                            <tr class='clickable-row' data-href='/temps/{{ temp.id }}/'>
+                                <td>{{ temp.title }}</td>
+                                <td>{{ temp.subject }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+                   </table>
+
+            </div>
+            <div style="padding: 10px;"><p style="display: inline-block;">Click on <b>Mail Template Record</b> to view details</p></div>
+            </div>    
+
+          </div>
+        </form>
+        </div>
+        </div>
+      </div>
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+    {% endblock %}    
+    {% block script %}    
+  <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#mailtable').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+            $(".clickable-row").click(function() {
+                  window.document.location = $(this).data("href");
+              });
+           /* $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#Verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });*/  
+      });    
+    </script>       
+{% endblock %}

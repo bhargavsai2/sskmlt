@@ -1,0 +1,19 @@
+Main Css for PPV Portal
+
+body{
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color: #333333;
+	width: 100%;
+    position: relative;
+    background: #f5f5f5;
+    zoom: 100%;
+    -moz-transform: scale(1);
+    -moz-transform-origin: 0 0;
+}
+body, html {
+    margin: 0;
+    height: 100%;
+}

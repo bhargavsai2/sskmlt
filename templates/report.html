@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-8 col-xs-push-2">
+
+
+                  <div> <!--id="Accountedit" class="collapse"-->
+            <div class="box">
+            <form role="form" name="save-consignee" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+                <div class="row">
+              <div class="col-md-12">
+                  <h3 class="box-title">Report</h3>
+                </div>
+                  <hr/>
+  
+              <div class="col-md-6">
+             <div class="form-group">
+                  <label for="Username Name">Start Date</label>
+                  <!-- <input type="text" class="form-control" id="start_date" placeholder="Start Date"> -->
+                  <div id="datepicker-popup2" class="input-group date datepicker">
+                    <input type="text" class="form-control" id='start_date' value='{{entry.date|date:"m/d/Y"}}'>
+                    <span class="input-group-addon input-group-append border-left">
+                      <span class="mdi mdi-calendar input-group-text"></span>
+                    </span>
+                  </div>
+                </div>
+                <!-- <div class='form-group'> -->
+              <!-- </div> -->
+              </div>
+              <div class="col-md-6">
+         <div class="form-group">
+                  <label for="First Name">End Date</label>
+                  <!-- <input type="text" class="form-control" id="end_date" placeholder="End Date"> -->
+                  <div id="datepicker-popup3" class="input-group date datepicker">
+                              <input type="text" class="form-control" id='end_date' value='{{entry.date|date:"m/d/Y"}}'>
+                              <span class="input-group-addon input-group-append border-left">
+                                <span class="mdi mdi-calendar input-group-text"></span>
+                              </span>
+                            </div>
+                </div>
+              </div>
+                <!-- <div class="col-md-12">
+                <div class='form-group'>
+                <button class="btn btn-default btn-md" href="#" style="/* margin-top: -5px; */border: 0px;box-shadow: none;color: rgb(13, 40, 93);font-weight: 600;background: rgb(255, 255, 255);" id="save"><i class="fa fa-edit">&nbsp;</i>Export</button>
+              </div>
+              </div> -->
+              
+          </div>
+        </div>
+
+
+
+
+        </form>
+        <button class="btn btn-default btn-md" style="/* margin-top: -5px; */border: 0px;box-shadow: none;color: rgb(13, 40, 93);font-weight: 600;background: rgb(255, 255, 255);" id="go">GO</button>
+        </div>
+        </div>
+        
+
+      
+        </div>
+      </div>
+      <div class="row" id = 'table-data'>
+
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+  $( document ).ready(function() {
+    $( "#datepicker-popup2" ).datepicker( "option", "dateFormat", 'dd.mm.yy' );
+    $( "#datepicker-popup3" ).datepicker( "option", "dateFormat", 'dd.mm.yy' );
+    $('#go').click(function(){
+        $.ajax({
+            url: window.location.href,
+            type: "POST",
+            data: {
+              csrfmiddlewaretoken: getCookie('csrftoken'),
+              start_date:$('#start_date').val(),
+              end_date:$('#end_date').val(),
+            },
+        success: function (data) {
+          $('#table-data').html(data);
+            // display_success('Saved Successfully')
+                         
+        },
+        error: function (xhr, errmsg, err) {
+          display_errors('Error Processing AJAX')
+        }
+      });
+    });    
+  });
+</script>
+{% endblock %}

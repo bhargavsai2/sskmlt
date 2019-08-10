@@ -1,0 +1,92 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+    table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 90%;
+          background: #fff;
+          margin-left: 50px;
+        }
+
+        td, th {
+          border: 0px solid #efefef;
+          text-align: center;
+          padding: 45px;
+        }
+        .hovereffect td{
+        font-size: 18px;
+        }
+      .hovereffect td:hover{
+    
+        color:white;
+        background: #08215c;
+        font-size: 18px;
+      }
+      .mt-50{
+        margin-top: 50px;
+      }
+      .blink_me {
+        animation: blinker 1s linear infinite;
+      }
+
+      @keyframes blinker {  
+        50% { opacity: 0; }
+      }
+
+</style>
+	<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1 style="display: inline">
+        Calendar View
+            </h1>
+      <!--ol class="breadcrumb">
+	   <li><a href="../index.html">Back to Home</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Properties</a></li>
+     
+      </ol-->
+     <div style="display: inline-flex; /*margin: 20px*/" class="pull-right">
+                  <select class="form-control">
+                    <option>2019</option>
+                    <option>2018</option>
+                    <option>2017</option>
+                    <option>2016</option>
+                    <option>2015</option>
+                    <option>2014</option>
+                  </select>
+                </div>
+    </section>
+    <!-- Main content -->
+ <section class="content mt-50">
+      <div class="row">
+            <table>
+              <tr class="hovereffect">
+                <td style="background-color: #90d690;"><img src="../static/images/jan.svg" width="35"><br>January</td>
+                <td style="background-color: #90d690;"><img src="../static/images/feb.svg" width="35"><br>February</td>
+                <td style="background-color: #90d690;"><img src="../static/images/mar.svg" width="35"><br>March</td>
+                <td style="background-color: #90d690;"><img src="../static/images/apr.svg" width="35"><br>April</td>
+              </tr>
+              <tr class="hovereffect">
+                <td style="background-color: #90d690;"><img src="../static/images/may.svg" width="35"><br>May</td>
+                <td class='blink_me' style="background-color: #e29a9a;"><img src="../static/images/jun.svg" width="35"><br>June</td>
+                <td><img src="../static/images/jul.svg" width="35"><br>July</td>
+                <td><img src="../static/images/aug.svg" width="35"><br>August</td>
+              </tr>
+              <tr class="hovereffect">
+                <td ><img src="../static/images/sept.svg" width="35"><br>September</td>
+                <td ><img src="../static/images/oct.svg" width="35"><br>October</td>
+                <td ><img src="../static/images/nov.svg" width="35"><br>November</td>
+                <td ><img src="../static/images/dec.svg" width="35"><br>December</td>
+              </tr>
+            </table>
+
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+{% endblock %}
+

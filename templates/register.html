@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+{% load static %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Sensus Customer Support Portal</title>
+    <link href="{% static 'css/style_sheet.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {
+            background: url('/static/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        
+/* Full-width input fields */
+input[type=text], input[type=password] {
+width: 92%;
+    padding: 9px;
+    margin: 4px 0 20px 0;
+    display: inline-block;
+    position: relative;
+    border: none;
+    background: #f1f1f1;
+    padding-left: 32px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+span i{
+    position: absolute;
+
+padding: 12px;
+color: #a19096;
+z-index: 99999;
+}
+input{
+    border-radius: 10px;
+}
+.login{
+    padding:15px;
+    width:95% !important;
+}
+    </style>
+    <script language="javascript" type="text/javascript">
+        function validate_all() { if ((document.getElementById("username").value == "") || (document.getElementById("password").value == "")) { alert("Required Values Empty - Please Correct"); return false; } }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 align="center">
+                <br />
+                <img id="logo" class="logo" src="{% static 'images/logo-sensus-siteMain.png' %}" alt="Sensus Logo" width="200px" border="0" longdesc="Sensus" />
+            </h1>
+        </div>
+    </div>
+    <div class="content-loginform" style="width:500px;border-radius: 20px;">
+        <br />
+        {% if success %}
+            <p style="text-align:center">Thank you for registering your account.</p>
+
+                            <p style="text-align: justify">Our Administration team will review this account
+                                application
+                                and you will be contacted over the email address you specified in your account
+                                registration
+                                if this account is validated.</p>
+
+                            <p style="text-align: justify">The review and validation process is dynamic, and may take up
+                                to 48 hours to complete.
+                                However, if this is an emergency, you may log in and request your account validation
+                                process
+                                to be escalated, however we stress that this escalation method should only be used in
+                                emergencies.</p>
+
+                            <p style="text-align: center;">Thank you for your patience.</p>
+        {% else %}
+        <form name="login" method="POST">
+            <!--input type="hidden" name="startURL" value="https://login.salesforce.com/apex/CP_Welcome" />
+            <input type="hidden" name="loginURL" value="" />
+            <input type="hidden" name="useSecure" value="true" />
+            <input type="hidden" name="orgId" value="00D30000000eRJw" />
+            <input type="hidden" name="portalId" value="06030000000eYHL" />
+            <input type="hidden" name="loginType" value="3" />
+            <input type="hidden" name="action" value="loginAction" /-->
+            {% csrf_token %}
+
+            <div class="container login">
+                <h1>Request for new account</h1>
+                <span>
+                    <i class="fa fa-user-circle-o"></i>
+                <input type="text" placeholder="LDAP Username" name="ldap_username" id='ldap-username' required>
+            </span>
+            <span>
+                    <i class="fa fa-user-circle-o"></i>
+                <input type="text" placeholder="First Name" name="first_name" id='first_name' required>
+            </span>
+            <span>
+                    <i class="fa fa-user-circle-o"></i>    
+                <input type="text" placeholder="Last Name" name="last_name" id='last_name' required>
+            </span>
+            <span>
+                <i class="fa fa-envelope"></i>    
+                <input type="text" placeholder="Email" name="email" id='email' required>
+            </span>
+            <span>
+                <i class="fa fa-envelope"></i>    
+                <input type="text" placeholder="Manager Email" name="manager_email" id='manager_email' required>
+            </span>
+            <span>
+                <i class="fa fa-phone"></i>    
+                <input type="text" placeholder="Phone" name="phone" id='phone' required>
+            </span>    
+                <button type="submit" class="registerbtn">Register</button>
+              </div>
+              
+              <div class="container signin">
+                <p>Already have an account? <a href="/login/">Sign in</a>.</p>
+              </div>
+        </form>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <p align="center">© 2019 Sensus. All rights reserved.</p>
+    </div>
+    <!--noscript><img src="//ldfr-cloud.net/images/track/17423.png?trk_user=17423&trk_tit=jsdisabled&trk_ref=jsdisabled&trk_loc=jsdisabled" height="0px" width="0px" style="display:none;" /></noscript-->
+</body>
+</html>

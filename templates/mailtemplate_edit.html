@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-8 col-xs-push-2">
+        <!--div class="box">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="{% static "images/avatar2.png" %}" alt="User profile picture">
+
+              <h3 class="profile-username text-center">{{user.username}}</h3>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Email</b> <a class="pull-right">{{user.email}}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>First name</b> <a class="pull-right">{{user.first_name}}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Last name</b> <a class="pull-right">{{user.last_name}}</a>
+                </li>
+                 <li class="list-group-item">
+                  <b>Contact</b> <a class="pull-right">{{user.contact}}</a>
+                </li>
+              </ul>
+              <div align="center">
+              <a href="#Accountedit" data-toggle="collapse" class="btn btn-primary"><i class="fa fa-edit">&nbsp;</i><b>Edit</b></a>
+            </div>
+            </div>
+          </div-->
+
+
+                  <div> <!--id="Accountedit" class="collapse"-->
+            <div class="box">
+            <form role="form" name="save-mail" method="POST" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+                <div class="row">
+              <div class="col-md-12">
+                  <h3 class="box-title">Edit Mail Template</h3>
+                </div>
+                  <hr/>
+  
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" class="form-control" id="title" placeholder="Title" value="{{temp.title}}">
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <input type="text" class="form-control" id="subject" placeholder="Subject" value="{{temp.subject}}">
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="subject">Mail Content</label>
+                  <textarea id="TypeHere">{{temp.mail_body}}</textarea>
+                </div>
+              </div>
+          </div>
+        </div>
+
+
+
+
+        </form>
+        </div>
+        </div>
+        
+
+      
+        </div>
+        <!-- /.col -->
+        <!--div class="col-xs-6">
+               <div id="Accountedit" class="collapse">
+            <div class="box">
+                  <form role="form" name="save-user" method="POST" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+
+              
+                  <h3 class="box-title">Edit Account</h3>
+                  <hr/>
+  
+    
+             <div class="form-group">
+                  <label for="Username Name">Username Name</label>
+                  <input type="text" class="form-control" id="Username" placeholder="Username" value = {{user.username}}>
+                </div>
+         <div class="form-group">
+                  <label for="First Name">First Name</label>
+                  <input type="text" class="form-control" id="FirstName" placeholder="First Name" value = {{user.first_name}}>
+                </div>
+            <div class="form-group">
+                  <label for="Last Name">Last Name</label>
+                  <input type="text" class="form-control" id="LastName" placeholder="Last Name" value = {{user.last_name}}>
+                </div>
+                <div class="form-group">
+                  <label for="Email">Email</label>
+                  <input type="text" class="form-control" id="Email" placeholder="Email" value={{user.email}}>
+                </div>
+                <div class="form-group">
+                  <label for="Address">Contact</label>
+                <input type="text" class="form-control" id="Contact" placeholder="Contact" value={{user.contact}}>
+                </div>
+          
+          </div>
+           <div class="box-footer" align="center">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane 
+"></i>&nbsp;Submit</button>
+              </div>
+        </form>
+        </div>
+        </div>
+        </div-->
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+  $( document ).ready(function() {
+      tinymce.init({selector:'#TypeHere'});
+      $("#target-form :input").prop("disabled", true);
+      $('#mceu_19').css('display','none');
+      $('#mceu_14').css('display','none');
+      $('#mceu_28').css('display','none');
+      $('#tinymce').attr('contenteditable','false');
+      tinyMCE.get('TypeHere').getBody().setAttribute('contenteditable', false);
+      $('#edit').click(function() {
+        $("#target-form :input").prop("disabled", false);
+        $('#mceu_19').css('display','block'); 
+        $('#mceu_14').css('display','block');
+        $('#mceu_28').css('display','block');
+        tinyMCE.get('TypeHere').getBody().setAttribute('contenteditable', true);
+      });
+      $('#cancel').click(function() {
+          $("#target-form :input").prop("disabled", true);
+          $('#mceu_19').css('display','none'); 
+          $('#mceu_14').css('display','none');
+          $('#mceu_28').css('display','none');
+          tinyMCE.get('TypeHere').getBody().setAttribute('contenteditable', false);
+      });
+      $('#save').click(function(){
+            $.ajax({
+                url: window.location.href,
+                type: "POST",
+                data: {
+                  csrfmiddlewaretoken: getCookie('csrftoken'),
+                  title:$('#title').val(),
+                  subject:$('#subject').val(),
+                  mail_body:tinyMCE.get('TypeHere').getContent()
+            },
+            success: function (json) {
+              new Noty({
+                type: 'success',
+                layout: 'topRight',
+                theme: 'mint',
+                text: 'Saved Successfully',
+                timeout: 3000,
+                progressBar: true,
+                closeWith: ['click', 'button'],
+                animation: {
+                    open: 'noty_effects_open',
+                    close: 'noty_effects_close'
+                },
+                id: false,
+                force: false,
+                killer: false,
+                queue: 'global',
+                container: false,
+                buttons: [],
+                sounds: {
+                    sources: [],
+                    volume: 1,
+                    conditions: []
+                },
+                titleCount: {
+                    conditions: []
+                },
+                modal: false
+            }).show();                
+            },
+            error: function (xhr, errmsg, err) {
+              new Noty({
+              type: 'error',
+              layout: 'topRight',
+              theme: 'mint',
+              text: 'Error',
+              timeout: 3000,
+              progressBar: true,
+              closeWith: ['click', 'button'],
+              animation: {
+                  open: 'noty_effects_open',
+                  close: 'noty_effects_close'
+              },
+              id: false,
+              force: false,
+              killer: false,
+              queue: 'global',
+              container: false,
+              buttons: [],
+              sounds: {
+                  sources: [],
+                  volume: 1,
+                  conditions: []
+              },
+              titleCount: {
+                  conditions: []
+              },
+              modal: false
+                }).show()
+            }
+          });
+            
+
+      });
+  });
+</script>
+{% endblock %}

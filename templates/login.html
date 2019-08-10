@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+{% load static %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Sensus Customer Support Portal</title>
+    <link href="{% static "css/style_sheet.css" %}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {
+            background: url('/static/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .auto-style1 {
+            width: 345px;
+        }
+
+        .auto-style2 {
+            width: 177px;
+        }
+
+        #username {
+            width: 179px;
+            margin-left: 25px;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+        function validate_all() { if ((document.getElementById("username").value == "") || (document.getElementById("password").value == "")) { alert("Required Values Empty - Please Correct"); return false; } }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 align="center">
+                <br />
+				<br />
+                SSKMLT
+            </h1>
+        </div>
+    </div>
+    <div class="content-loginform">
+        <br />
+        </h2>
+
+        <form name="login" method="POST">
+            <!--input type="hidden" name="startURL" value="https://login.salesforce.com/apex/CP_Welcome" />
+            <input type="hidden" name="loginURL" value="" />
+            <input type="hidden" name="useSecure" value="true" />
+            <input type="hidden" name="orgId" value="00D30000000eRJw" />
+            <input type="hidden" name="portalId" value="06030000000eYHL" />
+            <input type="hidden" name="loginType" value="3" />
+            <input type="hidden" name="action" value="loginAction" /-->
+            {% csrf_token %}
+
+            <table class="login" style="margin-left: auto; margin-right: auto;">
+                <tr>
+                    <td colspan="2" align="left" valign="bottom">
+                        <p align="left" class="form_text">
+                            <label for="login" class="form_text"><strong>Login</strong></label>
+                           <input type="text" id="username" name="username" size="25" maxlength="80" value="" class="username"  />
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="left" valign="bottom">
+                        <p align="left" class="form_text">
+                            <label for="password" class="form_text"><strong>Password</strong></label>
+                            <input type="password" id="password" name="password" maxlength="80" class="pw" style="width: 178px" />
+                            
+
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="164" height="35" align="center" valign="middle">
+                        <p class="form_text">
+                            <strong>
+                                <input type="checkbox" name="remember" id="rememberMe" tabindex="3" /><label for="rememberMe">Remember me</label>
+                            </strong>
+                        </p>
+                    </td>
+                    <td align="center" valign="top" class="auto-style2">
+                        <div align="center">
+                            <input type="submit" tabindex="4" value="Submit" class="button" id="Submit1" onclick="return validate_all();" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-top: 10px;"></td>
+                </tr>
+            </table>
+        </form>
+        <table class="login" style="margin-left: auto; margin-right: auto;">
+            <tr>
+                <td class="auto-style1" align="center">
+                    <p>
+                        <a href="#">Forgot password?</a>
+                        <br />
+                        <a href="/register/">Request an Account</a>
+                    </p>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <div class="footer">
+        <p align="center">© 2019 SSKMLT. All rights reserved.</p>
+    </div>
+    <!--noscript><img src="//ldfr-cloud.net/images/track/17423.png?trk_user=17423&trk_tit=jsdisabled&trk_ref=jsdisabled&trk_loc=jsdisabled" height="0px" width="0px" style="display:none;" /></noscript-->
+<script type="text/javascript">
+    $( document ).ready(function() {
+      var error_msgs = [];
+      if($('#username').val() == ""){
+        validate('#username');
+        error_msgs.push('Username is Required');
+      }
+      if($('#password').val() == ""){
+          validate('#password');
+          error_msgs.push('Password is Required');
+      }
+      if (error_msgs.length>0) {
+          var errors = error_msgs.join("<br/>");
+          display_errors(errors)
+      }
+    });  
+</script>    
+</body>
+</html>

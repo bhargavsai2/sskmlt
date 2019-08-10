@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-md-12">
+          <div id="Accountedit">
+            <div class="box">
+              <div class="table-responsive" style="margin:15px;">
+                  <table class="table table-bordered table-striped" id="usertable">
+                        <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                     {% for user in users %}
+                            <tr class='clickable-row' data-href='/user/{{ user.id }}/'>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                                <td id='username'>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+                   </table>
+
+                </div>
+          </div>
+        </form>
+        </div>
+        </div>
+      </div>
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+    {% endblock %}    
+    {% block script %}    
+  <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#usertable').DataTable({
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+            $(".clickable-row").click(function() {
+                  window.document.location = $(this).data("href");
+              });
+           /* $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#Verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });*/  
+      });    
+    </script>       
+{% endblock %}

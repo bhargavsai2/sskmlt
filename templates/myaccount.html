@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-8 col-xs-push-2">
+        <!--div class="box">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="{% static "images/avatar2.png" %}" alt="User profile picture">
+
+              <h3 class="profile-username text-center">{{user.username}}</h3>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Email</b> <a class="pull-right">{{user.email}}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>First name</b> <a class="pull-right">{{user.first_name}}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Last name</b> <a class="pull-right">{{user.last_name}}</a>
+                </li>
+                 <li class="list-group-item">
+                  <b>Contact</b> <a class="pull-right">{{user.contact}}</a>
+                </li>
+              </ul>
+              <div align="center">
+              <a href="#Accountedit" data-toggle="collapse" class="btn btn-primary"><i class="fa fa-edit">&nbsp;</i><b>Edit</b></a>
+            </div>
+            </div>
+          </div-->
+
+
+                  <div> <!--id="Accountedit" class="collapse"-->
+            <div class="box">
+            <form role="form" name="save-user" method="POST" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+                <div class="row">
+              <div class="col-md-12">
+                  <h3 class="box-title">Edit Account</h3>
+                </div>
+                  <hr/>
+  
+              <div class="col-md-6">
+             <div class="form-group">
+                  <label for="Username Name">Username Name</label>
+                  <input type="text" class="form-control" id="Username" placeholder="Username" value = {{user.username}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+         <div class="form-group">
+                  <label for="First Name">First Name</label>
+                  <input type="text" class="form-control" id="FirstName" placeholder="First Name" value = {{user.first_name}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+            <div class="form-group">
+                  <label for="Last Name">Last Name</label>
+                  <input type="text" class="form-control" id="LastName" placeholder="Last Name" value = {{user.last_name}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Email">Email</label>
+                  <input type="text" class="form-control" id="Email" placeholder="Email" value={{user.email}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Address">Contact</label>
+                <input type="text" class="form-control" id="Contact" placeholder="Contact" value={{user.contact}}>
+                </div>
+              </div>
+              {% if request.user.role == 'Administrator' %}
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="role">Role</label>
+                <select class="form-control" id='role' value='{{user.role}}'>
+                        <option value='Verifier' {% if user.role == 'Verifier' %}selected{%endif%} >Verifier</option>
+                        <option value='Administrator' {% if user.role == 'Administrator' %}selected{%endif%}>Administrator</option>
+                        <option value='Organizer' {% if user.role == 'Organizer' %}selected{%endif%}>Organizer</option>
+                      </select>
+                </div>
+              </div>
+              {% endif %}
+          </div>
+        </div>
+
+
+
+
+        </form>
+        </div>
+        </div>
+        
+
+      
+        </div>
+        <!-- /.col -->
+        <!--div class="col-xs-6">
+               <div id="Accountedit" class="collapse">
+            <div class="box">
+                  <form role="form" name="save-user" method="POST" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+
+              
+                  <h3 class="box-title">Edit Account</h3>
+                  <hr/>
+  
+    
+             <div class="form-group">
+                  <label for="Username Name">Username Name</label>
+                  <input type="text" class="form-control" id="Username" placeholder="Username" value = {{user.username}}>
+                </div>
+         <div class="form-group">
+                  <label for="First Name">First Name</label>
+                  <input type="text" class="form-control" id="FirstName" placeholder="First Name" value = {{user.first_name}}>
+                </div>
+            <div class="form-group">
+                  <label for="Last Name">Last Name</label>
+                  <input type="text" class="form-control" id="LastName" placeholder="Last Name" value = {{user.last_name}}>
+                </div>
+                <div class="form-group">
+                  <label for="Email">Email</label>
+                  <input type="text" class="form-control" id="Email" placeholder="Email" value={{user.email}}>
+                </div>
+                <div class="form-group">
+                  <label for="Address">Contact</label>
+                <input type="text" class="form-control" id="Contact" placeholder="Contact" value={{user.contact}}>
+                </div>
+          
+          </div>
+           <div class="box-footer" align="center">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane 
+"></i>&nbsp;Submit</button>
+              </div>
+        </form>
+        </div>
+        </div>
+        </div-->
+        <!--/.col-->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+  $( document ).ready(function() {
+    $("#target-form :input").prop("disabled", true);
+      $('#edit').click(function() {
+        $("#target-form :input").prop("disabled", false);
+      });
+      $('#cancel').click(function() {
+        $("#target-form :input").prop("disabled", true);
+      });
+    $('#save').click(function(){
+      var error_msgs = [];
+      if($('#Username').val() == ""){
+        validate('#Username');
+        error_msgs.push('Username is Required');
+      }
+      if($('#Email').val() == ""){
+          validate('#Email');
+          error_msgs.push('Email is Required');
+      }
+      if($('#FirstName').val() == ""){
+          validate('#FirstName');
+          error_msgs.push('FirstName is Required');   
+      }
+      if($('#LastName').val() == ""){
+          validate('#LastName');
+          error_msgs.push('LastName is Required');
+      }
+      if($('#Contact').val() == ""){
+          validate('#Contact');
+          error_msgs.push('Contact is Required');
+      }
+      if (error_msgs.length>0) {
+          var errors = error_msgs.join("<br/>");
+          display_errors(errors)
+      }else{
+              $.ajax({
+                  url: window.location.href,
+                  type: "POST",
+                  data: {
+                    csrfmiddlewaretoken: getCookie('csrftoken'),
+                    username:$('#Username').val(),
+                    first_name:$('#FirstName').val(),
+                    last_name:$('#LastName').val(),
+                    email:$('#Email').val(),
+                    contact:$('#Contact').val(),
+                    role:$('#role').val()
+              },
+              success: function (json) {
+                  display_success('Saved Successfully')
+                               
+              },
+              error: function (xhr, errmsg, err) {
+                display_errors('Error Processing AJAX')
+              }
+            });
+    }
+    });    
+  });
+</script>
+{% endblock %}

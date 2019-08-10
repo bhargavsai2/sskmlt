@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-8 col-xs-push-2">
+
+
+                  <div> <!--id="Accountedit" class="collapse"-->
+            <div class="box">
+            <form role="form" name="save-lorry" method="POST" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+                <div class="row">
+              <div class="col-md-12">
+                  <h3 class="box-title">ADD/Edit Lorry</h3>
+                </div>
+                  <hr/>
+  
+              <div class="col-md-6">
+             <div class="form-group">
+                  <label for="Username Name">Driver Name</label>
+                  <input type="text" class="form-control" id="driver_name" placeholder="Driver Name" value = {{lorry.driver_name}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+         <div class="form-group">
+                  <label for="First Name">Truck Number</label>
+                  <input type="text" class="form-control" id="truck_no" placeholder="Truck Number" value = {{lorry.truck_no}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+            <div class="form-group">
+                  <label for="Last Name">Driver Contact</label>
+                  <input type="text" class="form-control" id="driver_contact" placeholder="Driver Contact" value = {{lorry.driver_contact}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Email">Owner Name</label>
+                  <input type="text" class="form-control" id="owner_name" placeholder="Owner name" value={{lorry.owner_name}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Address">Owner Contact</label>
+                <input type="text" class="form-control" id="owner_contact" placeholder="Owner Contact" value={{lorry.owner_contact}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="role">Licence ID</label>
+                  <input type="text" class="form-control" id="licence_id" placeholder="Licence ID" value={{lorry.licence_id}}>
+                </div>
+              </div>
+          </div>
+        </div>
+
+
+
+
+        </form>
+        </div>
+        </div>
+        
+
+      
+        </div>
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+  $( document ).ready(function() {
+    $("#target-form :input").prop("disabled", true);
+      $('#edit').click(function() {
+        $("#target-form :input").prop("disabled", false);
+      });
+      $('#cancel').click(function() {
+        $("#target-form :input").prop("disabled", true);
+      });
+    $('#save').click(function(){
+      var error_msgs = [];
+      if($('#driver_name').val() == ""){
+        validate('#driver_name');
+        error_msgs.push('Driver name is Required');
+      }
+      if($('#driver_contact').val() == ""){
+          validate('#driver_contact');
+          error_msgs.push('Driver Contact is Required');
+      }
+      if($('#truck_no').val() == ""){
+          validate('#truck_no');
+          error_msgs.push('Truck Number is Required');   
+      }
+      if($('#owner_name').val() == ""){
+          validate('#owner_name');
+          error_msgs.push('owner Name is Required');
+      }
+      if($('#owner_contact').val() == ""){
+          validate('#owner_contact');
+          error_msgs.push('owner Contact is Required');
+      }
+
+      if($('#licence_id').val() == ""){
+          validate('#licence_id');
+          error_msgs.push('Licence ID is Required');
+      }
+      if (error_msgs.length>0) {
+          var errors = error_msgs.join("<br/>");
+          display_errors(errors)
+      }else{
+              $.ajax({
+                  url: window.location.href,
+                  type: "POST",
+                  data: {
+                    csrfmiddlewaretoken: getCookie('csrftoken'),
+                    driver_name:$('#driver_name').val(),
+                    driver_contact:$('#driver_contact').val(),
+                    owner_contact:$('#owner_contact').val(),
+                    owner_name:$('#owner_name').val(),
+                    truck_no:$('#truck_no').val(),
+                    licence_id:$('#licence_id').val()
+              },
+              success: function (json) {
+                  display_success('Saved Successfully')
+                               
+              },
+              error: function (xhr, errmsg, err) {
+                display_errors('Error Processing AJAX')
+              }
+            });
+    }
+    });    
+  });
+</script>
+{% endblock %}

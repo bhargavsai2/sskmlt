@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+{% if request.user.role == 'Administrator' %}    
+    <style type="text/css">
+      .Completed{
+        background-color: #ffe046 !important;
+      }
+    </style>
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <div class="box">
+              <div><h3 style="padding-left: 10px;display: inline-block;">PPV for {{date}}</h3>
+                  <div style="display: inline-flex; margin: 20px" class="pull-right">
+                  <button type="button" class="btn btn-block btn-success" style="margin-left: 10px"><a href="/assignnodes/{{date}}">Assign Nodes</a></button>
+                </div>
+                  </div>
+            <div class='box-body'>
+              <div style="height:400px;overflow-y: scroll;overflow-x: hidden;">
+                  <table class="table table-bordered table-striped" id="nodestable">
+                        <thead>
+                          <tr>
+                              <th><input type="checkbox" name="checknode" id='select-all-nodes'></th>
+                              <th>Time</th>
+                              <th>RNI/Node</th>
+                              <th>RNI ID</th>
+                              <th>Patching Status</th>
+                              <th>Patched on</th>
+                              <th>Verifier</th>
+                              <th>Verification Status</th>
+                              <th>Verified On</th>
+                              <th>Version</th>
+                          </tr>
+                    </thead>
+                   <tbody>
+                     {% for node in nodes %}
+                            <tr id={{node.rni_id}} class="clickable-row nodes-all {{node.patchingstatus}}" data-href='/editpostpatch/{{ node.id }}/'>
+                                <td><input type="checkbox" name="checknode" id={{node.rni_id}} class='select-node'></td>
+                                <td>{{ node.time }}</td>
+                                <td>{{ node.rni_name }}</td>
+                                <td>{{ node.rni_id }}</td>
+                                <td>{{ node.patchingstatus }}</td>
+                                <td>{{ node.patchedon }}</td>
+                                <td>{{ node.first_verifier }}</td>
+                                <td>{{ node.verificationstatus }}</td>
+                                <td>{{ node.verifiedon }}</td>
+                                <td>{{ node.rniparent.version }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button id='delete-node' type="button" class="btn" style="background-color: #104697;border-color:#104697;color:white; ">Delete Node</button>
+            <button id="add-node" type="button" class="btn" style="background-color: #104697;border-color:#104697;color:white"><a href="/addnode/{{date}}">Add Node</a></button>
+            <button id='mark-patched' type="button" class="btn" style="background-color: #104697;border-color:#104697;color:white">Mark as Patched</button>    
+          </div>  
+        </div>
+      </div>
+      <!-- <div class='col-xs-12'>
+        <button class='delete-node' ></button>
+        <button class="add-node"></button>
+        <button class='Mark as Patched'></button>
+      </div> -->
+    </div>  
+    </section>
+  </div>
+  {% else %}
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <div class="box">
+              <div><h3 style="padding-left: 10px;display: inline-block;">PPV for {{date}}</h3>
+                  <div style="display: inline-flex; margin: 20px" class="pull-right">
+                </div>
+                  </div>
+            <div class='box-body'>
+              <div style="height:400px;overflow-y: scroll;overflow-x: hidden;">
+                  <table class="table table-bordered table-striped" id="nodestable">
+                        <thead>
+                          <tr>
+                              <th><input type="checkbox" name="checknode" id='select-all-nodes'></th>
+                              <th>Time</th>
+                              <th>RNI/Node</th>
+                              <th>RNI ID</th>
+                              <th>Edit</th>
+                              <th>Patching Status</th>
+                              <th>Patched on</th>
+                              <th>Verifier</th>
+                              <th>Verification Status</th>
+                              <th>Verified On</th>
+                              <th>Version</th>
+                          </tr>
+                    </thead>
+                   <tbody>
+                     {% for node in nodes %}
+                            <tr id={{node.rni_id}} class="nodes-all {{node.patchingstatus}}">
+                                <td><input type="checkbox" name="checknode" id={{node.rni_id}} class='select-node'></td>
+                                <td>{{ node.time }}</td>
+                                <td>{{ node.rni_name }}</td>
+                                <td>{{ node.rni_id }}</td>
+                                <td class="clickable-row" data-href='/editpostpatch/{{ node.id }}/'>Edit</td>
+                                <td>{{ node.patchingstatus }}</td>
+                                <td>{{ node.patchedon }}</td>
+                                <td>{{ node.first_verifier }}</td>
+                                <td>{{ node.verificationstatus }}</td>
+                                <td>{{ node.verifiedon }}</td>
+                                <td>{{ node.rniparent.version }}</td>
+                            </tr>
+                        {% endfor %}
+                   </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button id='issue-node' type="button" class="btn" style="background-color: #104697;border-color:#104697;color:white; ">Mark of Issue</button>
+            <button id="verify-node" type="button" class="btn" style="background-color: #104697;border-color:#104697;color:white">Mark as Verified</button> 
+          </div>  
+        </div>
+      </div>
+      <!-- <div class='col-xs-12'>
+        <button class='delete-node' ></button>
+        <button class="add-node"></button>
+        <button class='Mark as Patched'></button>
+      </div> -->
+    </div>  
+    </section>
+  </div>
+  {% endif %}
+{% endblock %}    
+{% block script %}    
+  <script type="text/javascript">
+      $( document ).ready(function() {
+            $('#nodestable').DataTable({
+              'paging'      : false,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : false,
+            });
+
+            $(".clickable-row").click(function() {
+                  window.document.location = $(this).data("href");
+              });
+            // $('.select-node:checkbox:checked').each(function () {
+            //       value = $(this).attr('id')
+            //       $('.'+value).css('background-color','#b6bee6')
+            // });
+            $('.select-node').change(function(){
+                value = $(this).attr('id')
+                if($(this).is(':checked')) {
+                    $(this).attr('checked','checked');
+                    $('#'+value).css('background-color','#b6bee6')     
+                } else {
+                    $(this).removeAttr('checked')
+                    $('#'+value).css('background-color','#f9f9f9')
+                }
+            });
+            $('#select-all-nodes').change(function(){
+               if($(this).is(':checked')) {
+                    $('.select-node').attr('checked','checked');
+                    $('.nodes-all').css('background-color','#b6bee6');     
+                } else {
+                    $('.select-node').removeAttr('checked')
+                    $('.nodes-all').css('background-color','#f9f9f9');
+                } 
+            });
+            $('#verify-node').click(function(){
+                  checked_nodes = $("input:checked");
+                  checked_nodes = [];
+                  $("input:checked").each(function() {
+                      var value = $(this)[0].id;
+                      if(value != 'select-all-nodes'){
+                        checked_nodes.push(value);
+                      }  
+                  });
+                  if(checked_nodes.length >= 1){
+                      comment = $('#Comment').val();
+                      $.ajax({
+                          url: '/issuenodes/',
+                          type: "POST",
+                          data: {
+                            csrfmiddlewaretoken: getCookie('csrftoken'),
+                            nodes:JSON.stringify(checked_nodes),
+                            schedule_date:schedule_date,
+                            
+                      },
+                      success: function (json) {
+                          display_success('Saved Successfully')
+                          location.reload();
+                                       
+                      },
+                      error: function (xhr, errmsg, err) {
+                        display_errors('Error Processing AJAX')
+                        location.reload();
+                      }
+                    });    
+                  }
+                  else{
+                    display_errors('Please Check Nodes')
+                  }
+            });
+            $('#issue-node').click(function(){
+                  checked_nodes = $("input:checked");
+                  checked_nodes = [];
+                  $("input:checked").each(function() {
+                      var value = $(this)[0].id;
+                      if(value != 'select-all-nodes'){
+                        checked_nodes.push(value);
+                      }  
+                  });
+                  if (checked_nodes.length > 1){
+                      display_errors('Please Check only One Node')
+                  }
+                  else if(checked_nodes.length == 1){
+                      comment = $('#Comment').val();
+                      $.ajax({
+                          url: '/issuenodes/',
+                          type: "POST",
+                          data: {
+                            csrfmiddlewaretoken: getCookie('csrftoken'),
+                            nodes:JSON.stringify(checked_nodes),
+                            schedule_date:schedule_date,
+                            
+                      },
+                      success: function (json) {
+                          display_success('Saved Successfully')
+                          location.reload();
+                                       
+                      },
+                      error: function (xhr, errmsg, err) {
+                        display_errors('Error Processing AJAX')
+                        location.reload();
+                      }
+                    });    
+                  }
+                  else{
+                    display_errors('Please Check Nodes')
+                  }
+            });
+            $('#mark-patched').click(function(){
+                checked_nodes = [];
+                $("input:checked").each(function() {
+                    var value = $(this)[0].id;
+                    if(value != 'select-all-nodes'){
+                      checked_nodes.push(value);
+                    }  
+                });
+                schedule_date = window.location.href.split('/')[4]
+                if(checked_nodes.length == 0){
+                  display_errors('Please Check Nodes')
+                }else{
+                    $.ajax({
+                        url: '/patchnodes/',
+                        type: "POST",
+                        data: {
+                          csrfmiddlewaretoken: getCookie('csrftoken'),
+                          nodes:JSON.stringify(checked_nodes),
+                          schedule_date:schedule_date,
+                          
+                    },
+                    success: function (json) {
+                        display_success('Saved Successfully')
+                        location.reload();
+                                     
+                    },
+                    error: function (xhr, errmsg, err) {
+                      display_errors('Error Processing AJAX')
+                      location.reload();
+                    }
+                  });
+                }       
+            });
+           /* $('#usertable tbody').on( 'click', 'tr', function () {
+                $('#Verifier').val($(this).find('#username').text());
+                $('#modal-default').modal('hide');
+            });*/  
+      });    
+    </script>       
+{% endblock %}

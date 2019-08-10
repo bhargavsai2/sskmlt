@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Main content -->
+    <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-8 col-xs-push-2">
+                  <div> 
+            <div class="box">
+            <form role="form" name="save-user" method="POST" id='target-form'>
+                    {% csrf_token %}
+              <div class="box-body">
+                <div class="row">
+              <div class="col-md-12">
+                  <h3 class="box-title">ADD/EDIT Entry</h3>
+                </div>
+                  <hr/>
+  
+              <div class="col-md-6">
+             <div class="form-group">
+                  <label for="Username Name">Date</label>
+                  <input type="text" class="form-control" data-provide="datepicker" id="date" placeholder="Date" value = {{entry.date}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+         <div class="form-group">
+                  <label for="First Name">Consignee</label>
+                  <input type="text" class="form-control" id="consignee" placeholder="Consignee" value = {{entry.customer_consignee}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+            <div class="form-group">
+                  <label for="Last Name">Consigner</label>
+                  <input type="text" class="form-control" id="Consigner" placeholder="Consigner" value = {{entry.customer_consigner}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Email">Truck</label>
+                  <input type="text" class="form-control" id="truck" placeholder="truck" value={{entry.truck}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Address">tons</label>
+                <input type="text" class="form-control" id="Contact" placeholder="Contact" value={{entry.tons}}>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-grosup">
+                  <label for="role">Role</label>
+                <select class="form-control" id='role' value='{{user.role}}'>
+                        <option value='Verifier' {% if user.role == 'Verifier' %}selected{%endif%} >Verifier</option>
+                        <option value='Administrator' {% if user.role == 'Administrator' %}selected{%endif%}>Administrator</option>
+                        <option value='Organizer' {% if user.role == 'Organizer' %}selected{%endif%}>Organizer</option>
+                      </select>
+                </div>
+              </div>
+          </div>
+        </div>
+
+
+
+
+        </form>
+        </div>
+        </div>
+        
+
+      
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+  $( document ).ready(function() {
+    // $("#target-form :input").prop("disabled", true);
+    //   $('#edit').click(function() {
+    //     $("#target-form :input").prop("disabled", false);
+    //   });
+      $('#cancel').click(function() {
+        $("#target-form :input").prop("disabled", true);
+      });
+    $('#save').click(function(){
+      var error_msgs = [];
+      if($('#Username').val() == ""){
+        validate('#Username');
+        error_msgs.push('Username is Required');
+      }
+      if($('#Email').val() == ""){
+          validate('#Email');
+          error_msgs.push('Email is Required');
+      }
+      if($('#FirstName').val() == ""){
+          validate('#FirstName');
+          error_msgs.push('FirstName is Required');   
+      }
+      if($('#LastName').val() == ""){
+          validate('#LastName');
+          error_msgs.push('LastName is Required');
+      }
+      if($('#Contact').val() == ""){
+          validate('#Contact');
+          error_msgs.push('Contact is Required');
+      }
+      if (error_msgs.length>0) {
+          var errors = error_msgs.join("<br/>");
+          display_errors(errors)
+      }else{
+              $.ajax({
+                  url: window.location.href,
+                  type: "POST",
+                  data: {
+                    csrfmiddlewaretoken: getCookie('csrftoken'),
+                    username:$('#Username').val(),
+                    first_name:$('#FirstName').val(),
+                    last_name:$('#LastName').val(),
+                    email:$('#Email').val(),
+                    contact:$('#Contact').val(),
+                    role:$('#role').val()
+              },
+              success: function (json) {
+                  display_success('Saved Successfully')
+                               
+              },
+              error: function (xhr, errmsg, err) {
+                display_errors('Error Processing AJAX')
+              }
+            });
+    }
+    });    
+  });
+</script>
+{% endblock %}
