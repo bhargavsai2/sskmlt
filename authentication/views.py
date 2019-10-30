@@ -80,7 +80,7 @@ class UserLogin(View):
         return render(request,'login.html', {})
 
     def post(self, request):
-    	import pdb;pdb.set_trace()
+    	# import pdb;pdb.set_trace()
         uname=request.POST.get('username')
         pwd=request.POST.get('password')
         user=authenticate(username=uname, password=pwd)
