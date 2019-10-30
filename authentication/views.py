@@ -166,7 +166,7 @@ def lorries(request):
     return render(request,'lorries.html',{'lorries':lorries})
 def userlogout(request):
     logout(request)
-    return HttpResponseRedirect('/accounts/login/')
+    return HttpResponseRedirect('/login/')
 
 def dashboard(request):
     # if request.user.role == 'Administartor':

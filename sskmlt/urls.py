@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from authentication.views import UserLogin,dashboard,UserView,users,view_userdetails,register,create_lorry,update_lorry,lorries,consignees,consigners,create_consigner,create_consignee,entries,register,accountentry,report,download_report
+from authentication.views import UserLogin,dashboard,UserView,users,view_userdetails,register,create_lorry,update_lorry,lorries,consignees,consigners,create_consigner,create_consignee,entries,register,accountentry,report,download_report,userlogout
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/',UserLogin.as_view()),
@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'^create_consigner/(?P<id>[0-9]*)[/]*$',create_consigner),
     url(r'^create_consignee/(?P<id>[0-9]*)[/]*$',create_consignee),
     url(r'^accountentry/(?P<pk>[0-9]*)[/]*$',accountentry),
+    url(r'^logout/',userlogout),
+
 
     # consignees,consigners,create_consigner,create_consignee
 
