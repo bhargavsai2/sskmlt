@@ -25,7 +25,7 @@ class Lorry(models.Model):
     owner_name = models.CharField(max_length=50,help_text="Owner name")
     owner_contact = models.CharField(max_length=50,help_text="Owner Contact")
     licence_id = models.CharField(max_length=40,help_text="licence_id")
-
+    commission_amount = models.FloatField(null=True,blank=True)
 
 class CustomerCosignee(models.Model):
     customer_name = models.CharField(max_length=40,help_text='Customer name')
@@ -52,3 +52,4 @@ class AccountEntry(models.Model):
     paid_date = models.DateField(null=True,blank=True)
     paid_balance = models.FloatField(null=True,blank=True,default='0.0')
     station = models.CharField(max_length=10,null=True,blank=True)
+    driver_paid_balance = models.FloatField()
