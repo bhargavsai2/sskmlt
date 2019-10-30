@@ -52,4 +52,4 @@ class AccountEntry(models.Model):
     paid_date = models.DateField(null=True,blank=True)
     paid_balance = models.FloatField(null=True,blank=True,default='0.0')
     station = models.CharField(max_length=10,null=True,blank=True)
-    driver_paid_balance = models.FloatField()
+    driver_paid_balance = models.FloatField(null=True,blank=True)
